@@ -2,7 +2,7 @@ class_name TetrominoGenerator
 extends Node
 
 const squareScene = preload("res://scenes/square.tscn")
-@onready var tetrominos: Node3D = $"../Tetrominos"
+@onready var tetrominos: Node3D = $"../Node3D/Tetrominos"
 
 const width := 3
 const height := 4

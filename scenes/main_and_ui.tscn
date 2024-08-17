@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ojxs7sbt78vh"]
+[gd_scene load_steps=7 format=3 uid="uid://ojxs7sbt78vh"]
 
-[ext_resource type="Texture2D" uid="uid://14s7x2jdty23" path="res://assets/scale_square.png" id="1_ht8vc"]
+[ext_resource type="Theme" uid="uid://te37isgt50hw" path="res://assets/new_theme.tres" id="1_fsdf6"]
+[ext_resource type="Texture2D" uid="uid://bgqjefmxb6844" path="res://assets/Border.png" id="2_3h4mm"]
+[ext_resource type="Texture2D" uid="uid://dt40hvj6mhwuo" path="res://assets/scale2_square.png" id="3_eainu"]
+[ext_resource type="Texture2D" uid="uid://chhr1dmsrk8n8" path="res://assets/scale3_square.png" id="4_hctus"]
 
 [sub_resource type="Environment" id="Environment_hotaw"]
 
@@ -31,82 +34,248 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.58252)
 mesh = SubResource("CapsuleMesh_hfjl1")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(300, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 100.0
 grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_fsdf6")
 
-[node name="GridContainer" type="GridContainer" parent="CenterContainer"]
+[node name="TextureRect" type="TextureRect" parent="CenterContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+texture = ExtResource("2_3h4mm")
+expand_mode = 5
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/TextureRect"]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -98.1818
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/TextureRect/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="StartGameButton" type="Control" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 
-[node name="Control" type="Control" parent="CenterContainer/GridContainer"]
-custom_minimum_size = Vector2(0, 250)
-layout_mode = 2
+[node name="Control2" type="Control" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/GridContainer/Control"]
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton/Control2"]
 layout_mode = 2
 offset_right = 100.0
 offset_bottom = 100.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("3_eainu")
 stretch_mode = 4
 
-[node name="TextureRect2" type="TextureRect" parent="CenterContainer/GridContainer/Control"]
+[node name="TextureRect2" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton/Control2"]
 layout_mode = 2
 offset_left = 100.0
 offset_right = 200.0
 offset_bottom = 100.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("3_eainu")
 stretch_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="CenterContainer/GridContainer/Control"]
+[node name="TextureRect3" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton/Control2"]
 layout_mode = 2
 offset_left = 200.0
 offset_right = 300.0
 offset_bottom = 100.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("3_eainu")
 stretch_mode = 4
 
-[node name="TextureRect4" type="TextureRect" parent="CenterContainer/GridContainer/Control"]
+[node name="TextureRect4" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton/Control2"]
 layout_mode = 2
 offset_top = 100.0
 offset_right = 100.0
 offset_bottom = 200.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("3_eainu")
 stretch_mode = 4
 
-[node name="Control2" type="Control" parent="CenterContainer/GridContainer"]
+[node name="Button" type="Button" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton"]
+layout_mode = 2
+offset_right = 300.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 30
+
+[node name="Label" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 39.0
+offset_right = 323.0
+offset_bottom = 239.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 31
+text = "START GAME"
+
+[node name="Label2" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/StartGameButton"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 36.0
+offset_right = 320.0
+offset_bottom = 236.0
+theme_override_font_sizes/font_size = 31
+text = "START GAME"
+
+[node name="OptionsButton" type="Control" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/GridContainer/Control2"]
+[node name="Control2" type="Control" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton/Control2"]
 layout_mode = 2
 offset_right = 100.0
 offset_bottom = 100.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("4_hctus")
 stretch_mode = 4
 
-[node name="TextureRect2" type="TextureRect" parent="CenterContainer/GridContainer/Control2"]
+[node name="TextureRect2" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton/Control2"]
 layout_mode = 2
 offset_left = 100.0
 offset_right = 200.0
 offset_bottom = 100.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("4_hctus")
 stretch_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="CenterContainer/GridContainer/Control2"]
+[node name="TextureRect3" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton/Control2"]
 layout_mode = 2
 offset_left = 200.0
 offset_right = 300.0
 offset_bottom = 100.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("4_hctus")
 stretch_mode = 4
 
-[node name="TextureRect4" type="TextureRect" parent="CenterContainer/GridContainer/Control2"]
+[node name="TextureRect4" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton/Control2"]
 layout_mode = 2
+offset_left = 100.0
 offset_top = 100.0
-offset_right = 100.0
+offset_right = 200.0
 offset_bottom = 200.0
-texture = ExtResource("1_ht8vc")
+texture = ExtResource("4_hctus")
 stretch_mode = 4
+
+[node name="Button" type="Button" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton"]
+layout_mode = 2
+offset_right = 300.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 30
+
+[node name="Label2" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 38.0
+offset_right = 362.0
+offset_bottom = 238.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 31
+text = "OPTIONS"
+
+[node name="Label" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/OptionsButton"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 34.0
+offset_right = 359.0
+offset_bottom = 234.0
+theme_override_font_sizes/font_size = 31
+text = "OPTIONS"
+
+[node name="ExitButton" type="Control" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton/Control2"]
+layout_mode = 2
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("4_hctus")
+stretch_mode = 4
+
+[node name="TextureRect2" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton/Control2"]
+layout_mode = 2
+offset_left = 100.0
+offset_right = 200.0
+offset_bottom = 100.0
+texture = ExtResource("4_hctus")
+stretch_mode = 4
+
+[node name="TextureRect3" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton/Control2"]
+layout_mode = 2
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 200.0
+texture = ExtResource("4_hctus")
+stretch_mode = 4
+
+[node name="TextureRect4" type="TextureRect" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton/Control2"]
+layout_mode = 2
+offset_left = 200.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 200.0
+texture = ExtResource("4_hctus")
+stretch_mode = 4
+
+[node name="Button" type="Button" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton"]
+layout_mode = 2
+offset_right = 300.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 30
+
+[node name="Label3" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 35.0
+offset_right = 350.0
+offset_bottom = 235.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 31
+text = "EXIT"
+
+[node name="Label" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 32.0
+offset_right = 347.0
+offset_bottom = 232.0
+theme_override_font_sizes/font_size = 31
+text = "EXIT"
+
+[node name="Label4" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton"]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 134.0
+offset_right = 450.0
+offset_bottom = 334.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 31
+text = "EXIT"
+
+[node name="Label2" type="Label" parent="CenterContainer/TextureRect/CenterContainer/VBoxContainer/ExitButton"]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 131.0
+offset_right = 447.0
+offset_bottom = 331.0
+theme_override_font_sizes/font_size = 31
+text = "EXIT"

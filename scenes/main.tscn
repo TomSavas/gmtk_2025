@@ -1,19 +1,39 @@
 [gd_scene load_steps=4 format=3 uid="uid://c4rpayn57hir5"]
 
-[ext_resource type="Texture2D" uid="uid://brju20ob3byqa" path="res://icon.svg" id="1_hmvk1"]
+[ext_resource type="Texture2D" uid="uid://bgqjefmxb6844" path="res://assets/Border.png" id="1_wba2d"]
 [ext_resource type="Script" path="res://scripts/board.gd" id="2_npv1l"]
 [ext_resource type="Script" path="res://scripts/tetromino_generator.gd" id="2_x15hp"]
 
-[node name="Node3D" type="Node3D"]
+[node name="CanvasLayer" type="CanvasLayer"]
 
-[node name="BoardBackground" type="Sprite3D" parent="."]
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Node3D"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Node3D/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -5.5, 15)
+
+[node name="BoardBackground" type="Sprite3D" parent="Node3D"]
 transform = Transform3D(-10, 0, -8.74228e-08, 0, 18, 0, 8.74228e-07, 0, -1, 5, 0, 0)
-texture = ExtResource("1_hmvk1")
-region_enabled = true
+region_rect = Rect2(0, 0, 200, 0)
 script = ExtResource("2_npv1l")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -5, 15)
+[node name="Tetrominos" type="Node3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36601, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -7.15, 0)
+pixel_size = 0.0626
+texture = ExtResource("1_wba2d")
+region_rect = Rect2(0, 0, 176, 304)
 
 [node name="Button" type="Button" parent="."]
 offset_left = 624.0
@@ -23,8 +43,5 @@ offset_bottom = 50.0
 scale = Vector2(-12.8375, -5.105)
 script = ExtResource("2_x15hp")
 
-[node name="Tetrominos" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36601, 0)
-
-[connection signal="should_step" from="BoardBackground" to="BoardBackground" method="_on_should_step"]
+[connection signal="should_step" from="Node3D/BoardBackground" to="Node3D/BoardBackground" method="_on_should_step"]
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

@@ -1,0 +1,28 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://te37isgt50hw"]
+
+[ext_resource type="FontFile" uid="uid://b8esf83qt33jp" path="res://assets/boxy-bold.ttf" id="1_hrudk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mvu5h"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1by8"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgsbp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okink"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hnvsm"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[resource]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/fonts/font = ExtResource("1_hrudk")
+Button/styles/disabled = SubResource("StyleBoxFlat_mvu5h")
+Button/styles/focus = SubResource("StyleBoxFlat_p1by8")
+Button/styles/hover = SubResource("StyleBoxFlat_lgsbp")
+Button/styles/normal = SubResource("StyleBoxFlat_okink")
+Button/styles/pressed = SubResource("StyleBoxFlat_hnvsm")
+Label/fonts/font = ExtResource("1_hrudk")

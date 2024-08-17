@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://kutjdlv2io2o"]
 
 [ext_resource type="Script" path="res://scripts/square.gd" id="1_0lpv5"]
-[ext_resource type="Texture2D" uid="uid://brju20ob3byqa" path="res://icon.svg" id="1_tnw13"]
+[ext_resource type="Texture2D" uid="uid://14s7x2jdty23" path="res://assets/scale_square.png" id="2_373pd"]
 
 [node name="Square" type="Node3D"]
 script = ExtResource("1_0lpv5")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-texture = ExtResource("1_tnw13")
+pixel_size = 0.0313
+texture = ExtResource("2_373pd")

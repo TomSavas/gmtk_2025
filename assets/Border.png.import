@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://14s7x2jdty23"
-path.s3tc="res://.godot/imported/scale_square.png-d24509ab3ab4bab0656e3dc803a4770f.s3tc.ctex"
+uid="uid://bgqjefmxb6844"
+path.s3tc="res://.godot/imported/Border.png-a0ecbdcbee6bb79bfc6b743098f73667.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/scale_square.png"
-dest_files=["res://.godot/imported/scale_square.png-d24509ab3ab4bab0656e3dc803a4770f.s3tc.ctex"]
+source_file="res://assets/Border.png"
+dest_files=["res://.godot/imported/Border.png-a0ecbdcbee6bb79bfc6b743098f73667.s3tc.ctex"]
 
 [params]
 
