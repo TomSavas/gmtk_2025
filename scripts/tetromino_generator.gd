@@ -92,6 +92,9 @@ func generate_tetromino():
 	var t := _generate_tetromino(tetrominos)
 	Board.instance().add_tetromino(t)
 
+static var button_triggered := false
 func _on_pressed() -> void:
-	generate_tetromino()
-	Board.instance().on_tetromino_deactivation.connect(generate_tetromino)
+	if not button_triggered:
+		button_triggered = true
+		generate_tetromino()
+		Board.instance().on_tetromino_deactivation.connect(generate_tetromino)
