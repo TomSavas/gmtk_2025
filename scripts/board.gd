@@ -6,7 +6,7 @@ signal on_tetromino_deactivation()
 
 
 @export var time_dilation := 10.0
-@export var step_every_num_sec := 0.2
+@export var step_every_num_sec := 2
 @export var time_elapsed := 0.0
 
 static var singleton = null
@@ -83,15 +83,15 @@ func _process(delta: float) -> void:
 		
 		_recalc_board()
 	
-	#print("Board:")
-	#for y in height:
-		#var line = ""
-		#for x in width:
-			#var index = y * width + x
-			#var marker = "X" if board[index] else "0"
-			#line += marker
-		#print(line)
-	#print()
+	print("Board:")
+	for y in height:
+		var line = ""
+		for x in width:
+			var index = y * width + x
+			var marker = "X" if board[index] else "0"
+			line += marker
+		print(line)
+	print()
 	
 	time_elapsed += delta
 	

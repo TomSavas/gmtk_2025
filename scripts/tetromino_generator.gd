@@ -6,6 +6,16 @@ const squareScene = preload("res://scenes/square.tscn")
 
 const width := 3
 const height := 4
+const rotation_centers = [
+	Vector2(1.0, 1.0), # square 
+	Vector2(1.5, 1.5), # t-piece
+	Vector2(0.5, 1.5), # L
+	Vector2(1.5, 1.5), # other L
+	Vector2(0.5, 2.0), # long
+	Vector2(1.5, 1.5), # S
+	Vector2(1.5, 1.5) # Reverse s
+]
+
 # 3 x 4
 const baseShapes = [
 	[ # square 
@@ -53,11 +63,14 @@ const baseShapes = [
 ]
 
 static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
-	var baseShape = baseShapes[randi_range(0, len(baseShapes)-1)]
+	var shape_index = randi_range(0, len(baseShapes)-1)
+	#var shape_index = 
+	var baseShape = baseShapes[shape_index]
 	var realWidth = pow(2, maxDepth) * width
 	var realHeight = pow(2, maxDepth) * height	
 	
 	var tetromino = Tetromino.new([])
+	tetromino.rotation_center = rotation_centers[shape_index]
 	tetromino.name = "tetromino"
 	tetrominos.add_child(tetromino)
 	
