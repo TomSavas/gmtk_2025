@@ -2,6 +2,8 @@ class_name Board
 extends Node
 
 signal should_step(depth: int)
+signal on_tetromino_deactivation()
+
 
 @export var time_dilation := 10.0
 @export var step_every_num_sec := 0.2
@@ -44,9 +46,7 @@ func _check_lines():
 
 func _clear_dead_squares(min_line, max_line):
 	for t in tetrominos:
-		#if t.topLeftSquare[1] < min_line or t.topLeftSquare[1] > max_line:
-			#continue
-			
+
 		var i = 0
 		while i < len(t.squares):
 			var s = t.squares[i]
@@ -71,6 +71,7 @@ func _process(delta: float) -> void:
 		
 		if currently_live_tetromino and not currently_live_tetromino.alive:
 			currently_live_tetromino = null
+			on_tetromino_deactivation.emit()
 		
 		var lines = _check_lines()
 		if len(lines) == 0:
@@ -82,15 +83,15 @@ func _process(delta: float) -> void:
 		
 		_recalc_board()
 	
-	print("Board:")
-	for y in height:
-		var line = ""
-		for x in width:
-			var index = y * width + x
-			var marker = "X" if board[index] else "0"
-			line += marker
-		print(line)
-	print()
+	#print("Board:")
+	#for y in height:
+		#var line = ""
+		#for x in width:
+			#var index = y * width + x
+			#var marker = "X" if board[index] else "0"
+			#line += marker
+		#print(line)
+	#print()
 	
 	time_elapsed += delta
 	
@@ -104,18 +105,28 @@ func _recalc_board(excludes = null):
 	
 func in_bounds(t: Tetromino) -> bool:
 	for s in t.squares:
+		var x = t.topLeftSquare[0] + s.offsetInTetromino[0]
+		if x < 0 or width <= x:
+			return false
+			
+	return true
+	
+func above_ground(t: Tetromino) -> bool:
+	for s in t.squares:
 		if t.topLeftSquare[1] + s.offsetInTetromino[1] >= height:
 			return false
 			
 	return true
 	
+	
 func collides(t: Tetromino) -> bool:
 	_recalc_board([t, currently_live_tetromino])
-	if not in_bounds(t):
+	if not above_ground(t) or not in_bounds(t):
 		return true
 		
 	for s in t.squares:
-		if board[_index(t, s)]:
+		var index = _index(t, s)
+		if board[index]:
 			return true
 		
 	return false

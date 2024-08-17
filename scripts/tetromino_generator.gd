@@ -14,12 +14,12 @@ const baseShapes = [
 	0, 0, 0,
 	0, 0, 0	
 	],
-	#[ # t-piece
-	#0, 1, 0,
-	#1, 1, 1,
-	#0, 0, 0,
-	#0, 0, 0	
-	#],
+	[ # t-piece
+	0, 1, 0,
+	1, 1, 1,
+	0, 0, 0,
+	0, 0, 0	
+	],
 	[ # L
 	1, 0, 0,
 	1, 0, 0,
@@ -38,21 +38,21 @@ const baseShapes = [
 	1, 0, 0,
 	1, 0, 0	
 	],
-	#[ # S
-	#0, 1, 1,
-	#1, 1, 0,
-	#0, 0, 0,
-	#0, 0, 0
-	#],
-	#[ # Reverse s
-	#1, 1, 0,
-	#0, 1, 1,
-	#0, 0, 0,
-	#0, 0, 0
-	#],
+	[ # S
+	0, 1, 1,
+	1, 1, 0,
+	0, 0, 0,
+	0, 0, 0
+	],
+	[ # Reverse s
+	1, 1, 0,
+	0, 1, 1,
+	0, 0, 0,
+	0, 0, 0
+	],
 ]
 
-static func generateTetromino(tetrominos, maxDepth=0) -> Tetromino:
+static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
 	var baseShape = baseShapes[randi_range(0, len(baseShapes)-1)]
 	var realWidth = pow(2, maxDepth) * width
 	var realHeight = pow(2, maxDepth) * height	
@@ -88,11 +88,10 @@ static func generateTetromino(tetrominos, maxDepth=0) -> Tetromino:
 					
 	return tetromino
 
+func generate_tetromino():
+	var t := _generate_tetromino(tetrominos)
+	Board.instance().add_tetromino(t)
 
 func _on_pressed() -> void:
-	# TEMP(savas): for debugging purposes
-	#for child in tetrominos.get_children():
-		#child.queue_free()
-
-	var t := generateTetromino(tetrominos)
-	Board.instance().add_tetromino(t)
+	generate_tetromino()
+	Board.instance().on_tetromino_deactivation.connect(generate_tetromino)
