@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c4rpayn57hir5"]
 
-[ext_resource type="Texture2D" uid="uid://bgqjefmxb6844" path="res://assets/Border.png" id="1_wba2d"]
+[ext_resource type="Texture2D" uid="uid://dhw76mpin1twk" path="res://assets/Border_thin.png" id="2_h70j5"]
 [ext_resource type="Script" path="res://scripts/board.gd" id="2_npv1l"]
 [ext_resource type="Script" path="res://scripts/tetromino_generator.gd" id="2_x15hp"]
 [ext_resource type="Theme" uid="uid://te37isgt50hw" path="res://assets/new_theme.tres" id="3_y4q4p"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" path="res://scenes/do_random_stuff.gd" id="7_kmgr1"]
 
 [sub_resource type="Gradient" id="Gradient_rxy4p"]
-colors = PackedColorArray(0.0627451, 0.32549, 0.564706, 1, 0.0627451, 0.32549, 0.564706, 1)
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.491349)
+colors = PackedColorArray(0.0627451, 0.32549, 0.564706, 1, 0.105882, 0.584314, 0.552941, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_q4bxy"]
 gradient = SubResource("Gradient_rxy4p")
@@ -41,8 +43,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36601, 0)
 
 [node name="Sprite3D" type="Sprite3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -7.15, 0)
-pixel_size = 0.0626
-texture = ExtResource("1_wba2d")
+pixel_size = 0.0313
+texture = ExtResource("2_h70j5")
 region_rect = Rect2(0, 0, 176, 304)
 
 [node name="Background" type="Sprite3D" parent="Node3D"]
