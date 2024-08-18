@@ -64,9 +64,9 @@ const baseShapes = [
 
 static var idx = 0;
 static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
-	var shape_index = idx
-	idx = (idx + 1) % len(baseShapes)
-	#var shape_index = randi_range(0, len(baseShapes)-1)
+	#var shape_index = idx
+	#idx = (idx + 1) % len(baseShapes)
+	var shape_index = randi_range(0, len(baseShapes)-1)
 	#var shape_index = randi_range(2, 3)
 	#var shape_index = 4
 	var baseShape = baseShapes[shape_index]
