@@ -5,6 +5,7 @@ extends Node3D
 @export var squares: Array[Square] = []
 @export var alive: bool = false
 @export var rotation_center: Vector2 = Vector2(0, 0)
+@export var depth = 0
 
 func _init(squares: Array[Square]) -> void:
 	self.squares = squares
@@ -13,31 +14,43 @@ func _init(squares: Array[Square]) -> void:
 func _ready() -> void:
 	pass
 
+func _step_count():
+	return pow(2, depth)
+
 func forcedStep(step_count=1, dir=Vector2(0.0, 1.0), undo=true):
+	var depth_scale = pow(0.5, depth)
 	for i in max(1, step_count):
-		self.position += Vector3(dir[0], -dir[1], 0)
+		self.position += Vector3(dir[0], -dir[1], 0) * depth_scale
 		topLeftSquare += dir
 		
 		var board := Board.instance()
 		if undo and board.collides(self):
-			self.position -= Vector3(dir[0], -dir[1], 0)
+			self.position -= Vector3(dir[0], -dir[1], 0) * depth_scale
 			topLeftSquare -= dir
 			return false
 	
 	return true
 	
 func _unsafe_rotate(clockwise=true):
+	var offset = 0.0
+	for i in range(2, depth + 2):
+		offset += pow(0.5, i)
+	
+	var depth_scale = pow(0.5, depth)
 	for s in squares:
 		# move the origin to center of mass
-		s.offsetInTetromino += Vector2(0.5, 0.5)
+		s.offsetInTetromino += Vector2(0.5, 0.5) * depth_scale
 		s.offsetInTetromino -= rotation_center
 		# rotate around the origin by pi/2
 		s.offsetInTetromino = s.offsetInTetromino.rotated(PI / 2 * (1.0 if clockwise else -1.0))
 		# undo origin translation
 		s.offsetInTetromino += rotation_center
-		s.offsetInTetromino -= Vector2(0.5, 0.5)
-		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0]), round(s.offsetInTetromino[1]))
-		s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
+		s.offsetInTetromino -= Vector2(0.5, 0.5) * depth_scale
+		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0] / depth_scale) * depth_scale, round(s.offsetInTetromino[1] / depth_scale) * depth_scale)
+		#s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
+
+		s.position = Vector3(s.offsetInTetromino[0] - offset, -s.offsetInTetromino[1] + offset, 0)
+
 	
 func _rotateUndo() -> bool:
 	_unsafe_rotate(true)
@@ -53,16 +66,16 @@ func _rotate():
 	if _rotateUndo():
 		return
 		
-	var moveSuceeded = forcedStep(1, Vector2(-1.0, 0.0), true)
+	var moveSuceeded = forcedStep(_step_count(), Vector2(-1.0, 0.0), true)
 	if moveSuceeded and _rotateUndo():
 		return
 			
-	moveSuceeded = forcedStep(1, Vector2(1.0, 0.0), true)
+	moveSuceeded = forcedStep(_step_count(), Vector2(1.0, 0.0), true)
 	if moveSuceeded and _rotateUndo():
 		return
 	
 func step(depth: int = 0):
-	if not forcedStep(1, Vector2(0.0, 1.0), true):
+	if not forcedStep(_step_count(), Vector2(0.0, 1.0), true):
 	# TODO(savas): add some grace period for rotations, etc.
 		Board.instance().should_step.disconnect(step)
 		alive = false
@@ -73,7 +86,6 @@ func swap_remove_square(index: int):
 	squares[-1] = squares[index]
 	squares[index] = temp
 	squares.pop_back().queue_free()
-
 
 @export var default_cooldown = 0.075
 @export var action_cooldowns = {}
@@ -94,12 +106,12 @@ func _process(delta: float) -> void:
 	for key in action_cooldowns:
 		action_cooldowns[key] -= delta
 		
-	_action_with_cooldown('left', func(): forcedStep(1, Vector2(-1.0, 0.0), true))
-	_action_with_cooldown('right', func(): forcedStep(1, Vector2(1.0, 0.0), true))
+	_action_with_cooldown('left', func(): forcedStep(_step_count(), Vector2(-1.0, 0.0), true))
+	_action_with_cooldown('right', func(): forcedStep(_step_count(), Vector2(1.0, 0.0), true))
 	_action_with_cooldown('down', func(): Board.instance().forced_step = true)
 
 	if Input.is_action_just_pressed('rotate'):
 		_rotate()
 		
 	if Input.is_action_just_pressed('drop'):
-		forcedStep(20, Vector2(0.0, 1.0), true)
+		forcedStep(_step_count() * 20, Vector2(0.0, 1.0), true)

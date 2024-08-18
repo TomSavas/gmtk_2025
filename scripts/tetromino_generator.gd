@@ -73,15 +73,15 @@ const shape_colors = [
 ]
 
 static var idx = 0;
-static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
+static func _generate_tetromino(tetrominos, depth=2) -> Tetromino:
 	#var shape_index = idx
 	#idx = (idx + 1) % len(baseShapes)
 	var shape_index = randi_range(0, len(baseShapes)-1)
 	#var shape_index = randi_range(2, 3)
-	#var shape_index = 4
+	#shape_index = 4
 	var baseShape = baseShapes[shape_index]
-	var realWidth = pow(2, maxDepth) * width
-	var realHeight = pow(2, maxDepth) * height	
+	var real_width = pow(2, depth) * width
+	var real_height = pow(2, depth) * height	
 	
 	var tetromino = Tetromino.new([])
 	tetromino.rotation_center = rotation_centers[shape_index]
@@ -93,36 +93,34 @@ static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
 			var index := y * width + x
 			if baseShape[index] == 0:
 				continue
-				
+
+	var offset = 0.0
+	for i in range(2, depth + 2):
+		offset += pow(0.5, i)
+
+	var step = pow(0.5, depth)
+	for x in real_width:
+		for y in real_height:
+			var scaled_x = x * step
+			var scaled_y = y * step
+			print(scaled_x, scaled_y)
+			
+			var index = floor(scaled_y) * width + floor(scaled_x)
+			if baseShape[index] == 0:
+				continue
+							
 			var scene = squareScene.instantiate()
 			var square = scene.get_node(".") as Square
 			square.get_node("Sprite3D").texture = shape_colors[shape_index]
-			scene.position = Vector3(x, -y, 0)
+			scene.position = Vector3(scaled_x - offset, -scaled_y + offset, 0)
 			
-			square.offsetInTetromino = Vector2(x, y)
+			square.offsetInTetromino = Vector2(scaled_x, scaled_y)
+			square.scale *= pow(0.5, depth)
+			tetromino.depth = depth
 			tetromino.squares.append(square)
 			
 			tetromino.add_child(scene)
-				
-			#for x_offset in pow(2, maxDepth) + 1:
-				#for y_offset in pow(2, maxDepth) + 1:
-					#var scene = squareScene.instantiate()
-					#tetromino.add_child(scene)
-					##scene.reparent(tetromino)
-					##var square = scene.get_script() as Square
-					#
-					##square.offsetInTetromino = Vector2(x + x_offset, y + y_offset)
-					##tetromino.squares.append(square)
-					
-	#var scene = squareScene.instantiate()
-	#var square = scene.get_node(".") as Square
-	#scene.position = Vector3(tetromino.rotation_center[0], -tetromino.rotation_center[1], 0)
-	#square.scale *= 0.5
-	#square.offsetInTetromino = Vector2(tetromino.rotation_center[0], tetromino.rotation_center[1])
-	#tetromino.squares.append(square)
-	#
-	#tetromino.add_child(scene)
-					#
+	
 	return tetromino
 
 func generate_tetromino():

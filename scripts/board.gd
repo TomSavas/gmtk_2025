@@ -14,8 +14,8 @@ static var singleton = null
 static func instance() -> Board:
 	return singleton
 	
-@export var width = 10
-@export var height = 18
+@export var width = 10 * 4
+@export var height = 18 * 4
 
 var tetrominos: Array[Tetromino] = []
 var board: Array[bool] = []
@@ -47,11 +47,11 @@ func _check_lines():
 
 func _clear_dead_squares(min_line, max_line):
 	for t in tetrominos:
-
+		var depth_scale = pow(2, t.depth)
 		var i = 0
 		while i < len(t.squares):
 			var s = t.squares[i]
-			var y = t.topLeftSquare[1] + s.offsetInTetromino[1]
+			var y = t.topLeftSquare[1] + s.offsetInTetromino[1] * depth_scale
 			if min_line <= y and y <= max_line:
 				t.swap_remove_square(i)
 			else:
@@ -59,7 +59,7 @@ func _clear_dead_squares(min_line, max_line):
 	
 func _move_all_dead_above(min_line, cleared_line_count):
 	for t in tetrominos:
-		if t.topLeftSquare[1] > min_line:
+		if t.topLeftSquare[1] >= min_line:
 			continue
 			
 		t.forcedStep(cleared_line_count, Vector2(0.0, 1.0), false)
@@ -105,16 +105,18 @@ func _recalc_board(excludes = null):
 			board[_index(tetromino, square)] = true
 	
 func in_bounds(t: Tetromino) -> bool:
+	var depth_scale = pow(2, t.depth)
 	for s in t.squares:
-		var x = t.topLeftSquare[0] + s.offsetInTetromino[0]
+		var x = t.topLeftSquare[0] + s.offsetInTetromino[0] * depth_scale
 		if x < 0 or width <= x:
 			return false
 			
 	return true
 	
 func above_ground(t: Tetromino) -> bool:
+	var depth_scale = pow(2, t.depth)
 	for s in t.squares:
-		if t.topLeftSquare[1] + s.offsetInTetromino[1] >= height:
+		if t.topLeftSquare[1] + s.offsetInTetromino[1] * depth_scale >= height:
 			return false
 			
 	return true
@@ -132,7 +134,9 @@ func collides(t: Tetromino) -> bool:
 	return false
 	
 func _index(t: Tetromino, s: Square) -> int:
-	var offset = t.topLeftSquare + s.offsetInTetromino
+	var depth_scale = pow(2.0, t.depth)
+	#var offset = t.topLeftSquare + s.offsetInTetromino * depth_scale
+	var offset = t.topLeftSquare + s.offsetInTetromino * depth_scale
 	return offset[1] * width + offset[0]
 	
 func add_tetromino(t: Tetromino): 

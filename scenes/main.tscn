@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c4rpayn57hir5"]
+[gd_scene load_steps=14 format=3 uid="uid://c4rpayn57hir5"]
 
 [ext_resource type="Script" path="res://scenes/game_controller.gd" id="1_t0j2e"]
 [ext_resource type="Texture2D" uid="uid://dhw76mpin1twk" path="res://assets/Border_thin.png" id="2_h70j5"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dt40hvj6mhwuo" path="res://assets/scale2_square.png" id="4_ipu2p"]
 [ext_resource type="Texture2D" uid="uid://chhr1dmsrk8n8" path="res://assets/scale3_square.png" id="6_6qbph"]
 [ext_resource type="Script" path="res://scenes/do_random_stuff.gd" id="7_kmgr1"]
+[ext_resource type="AudioStream" uid="uid://qv2wmyog7l51" path="res://assets/tetris.mp3" id="9_gm05w"]
 
 [sub_resource type="Gradient" id="Gradient_6book"]
 colors = PackedColorArray(0.719076, 0.719076, 0.719076, 1, 0.717647, 0.717647, 0.717647, 1)
@@ -229,6 +230,11 @@ offset_right = 1810.0
 offset_bottom = 981.0
 texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_gm05w")
+autoplay = true
+parameters/looping = true
 
 [connection signal="should_step" from="Node3D/BoardBackground" to="Node3D/BoardBackground" method="_on_should_step"]
 [connection signal="pressed" from="StartGameButton/Button" to="StartGameButton/Button" method="_on_pressed"]
