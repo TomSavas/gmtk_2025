@@ -62,7 +62,7 @@ func _move_all_dead_above(min_line, cleared_line_count):
 		if t.topLeftSquare[1] > min_line:
 			continue
 			
-		t.forcedStep(cleared_line_count)
+		t.forcedStep(cleared_line_count, Vector2(0.0, 1.0), false)
 
 func _process(delta: float) -> void:
 	if time_elapsed > step_every_num_sec or forced_step:
