@@ -1,10 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4rpayn57hir5"]
+[gd_scene load_steps=10 format=3 uid="uid://c4rpayn57hir5"]
 
 [ext_resource type="Texture2D" uid="uid://bgqjefmxb6844" path="res://assets/Border.png" id="1_wba2d"]
 [ext_resource type="Script" path="res://scripts/board.gd" id="2_npv1l"]
 [ext_resource type="Script" path="res://scripts/tetromino_generator.gd" id="2_x15hp"]
 [ext_resource type="Theme" uid="uid://te37isgt50hw" path="res://assets/new_theme.tres" id="3_y4q4p"]
 [ext_resource type="Texture2D" uid="uid://dt40hvj6mhwuo" path="res://assets/scale2_square.png" id="4_ipu2p"]
+[ext_resource type="Texture2D" uid="uid://chhr1dmsrk8n8" path="res://assets/scale3_square.png" id="6_6qbph"]
+[ext_resource type="Script" path="res://scenes/do_random_stuff.gd" id="7_kmgr1"]
+
+[sub_resource type="Gradient" id="Gradient_rxy4p"]
+colors = PackedColorArray(0.0627451, 0.32549, 0.564706, 1, 0.0627451, 0.32549, 0.564706, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_q4bxy"]
+gradient = SubResource("Gradient_rxy4p")
 
 [node name="CanvasLayer" type="CanvasLayer"]
 
@@ -36,6 +44,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -7.15, 0)
 pixel_size = 0.0626
 texture = ExtResource("1_wba2d")
 region_rect = Rect2(0, 0, 176, 304)
+
+[node name="Background" type="Sprite3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.3614)
+texture = SubResource("GradientTexture1D_q4bxy")
+region_enabled = true
+region_rect = Rect2(0, 0, 10000, 10000)
 
 [node name="StartGameButton" type="Control" parent="."]
 custom_minimum_size = Vector2(300, 200)
@@ -107,6 +121,94 @@ offset_right = 320.0
 offset_bottom = 236.0
 theme_override_font_sizes/font_size = 31
 text = "START GAME"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 224.0
+offset_top = 643.0
+offset_right = 324.0
+offset_bottom = 743.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+offset_left = 380.0
+offset_top = 451.0
+offset_right = 480.0
+offset_bottom = 551.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+offset_left = 1403.0
+offset_top = 689.0
+offset_right = 1503.0
+offset_bottom = 789.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+offset_left = 1352.0
+offset_top = 380.0
+offset_right = 1452.0
+offset_bottom = 480.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect5" type="TextureRect" parent="."]
+offset_left = 1481.0
+offset_top = 263.0
+offset_right = 1581.0
+offset_bottom = 363.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect6" type="TextureRect" parent="."]
+offset_left = 1661.0
+offset_top = 116.0
+offset_right = 1761.0
+offset_bottom = 216.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect7" type="TextureRect" parent="."]
+offset_left = 1712.0
+offset_top = 596.0
+offset_right = 1812.0
+offset_bottom = 696.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect8" type="TextureRect" parent="."]
+offset_left = 1303.0
+offset_top = 62.0
+offset_right = 1403.0
+offset_bottom = 162.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect9" type="TextureRect" parent="."]
+offset_left = 454.0
+offset_top = 827.0
+offset_right = 554.0
+offset_bottom = 927.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect10" type="TextureRect" parent="."]
+offset_left = 78.0
+offset_top = 406.0
+offset_right = 178.0
+offset_bottom = 506.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
+
+[node name="TextureRect11" type="TextureRect" parent="."]
+offset_left = 1582.0
+offset_top = 852.0
+offset_right = 1682.0
+offset_bottom = 952.0
+texture = ExtResource("6_6qbph")
+script = ExtResource("7_kmgr1")
 
 [connection signal="should_step" from="Node3D/BoardBackground" to="Node3D/BoardBackground" method="_on_should_step"]
 [connection signal="pressed" from="StartGameButton/Button" to="StartGameButton/Button" method="_on_pressed"]

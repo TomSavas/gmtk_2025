@@ -62,6 +62,16 @@ const baseShapes = [
 	],
 ]
 
+const shape_colors = [
+	preload("res://assets/scale_square.png"),
+	preload("res://assets/scale2_square.png"),
+	preload("res://assets/scale3_square.png"),
+	preload("res://assets/scale4_square.png"),
+	preload("res://assets/scale4_square.png"),
+	preload("res://assets/scale4_square.png"),
+	preload("res://assets/scale4_square.png"),
+]
+
 static var idx = 0;
 static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
 	var shape_index = idx
@@ -86,6 +96,7 @@ static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
 				
 			var scene = squareScene.instantiate()
 			var square = scene.get_node(".") as Square
+			square.get_node("Sprite3D").texture = shape_colors[shape_index]
 			scene.position = Vector3(x, -y, 0)
 			
 			square.offsetInTetromino = Vector2(x, y)
