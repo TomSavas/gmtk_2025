@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c4rpayn57hir5"]
+[gd_scene load_steps=12 format=3 uid="uid://c4rpayn57hir5"]
 
 [ext_resource type="Texture2D" uid="uid://dhw76mpin1twk" path="res://assets/Border_thin.png" id="2_h70j5"]
 [ext_resource type="Script" path="res://scripts/board.gd" id="2_npv1l"]
@@ -7,6 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://dt40hvj6mhwuo" path="res://assets/scale2_square.png" id="4_ipu2p"]
 [ext_resource type="Texture2D" uid="uid://chhr1dmsrk8n8" path="res://assets/scale3_square.png" id="6_6qbph"]
 [ext_resource type="Script" path="res://scenes/do_random_stuff.gd" id="7_kmgr1"]
+
+[sub_resource type="Gradient" id="Gradient_6book"]
+colors = PackedColorArray(0.719076, 0.719076, 0.719076, 1, 0.717647, 0.717647, 0.717647, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0yvrl"]
+gradient = SubResource("Gradient_6book")
 
 [sub_resource type="Gradient" id="Gradient_rxy4p"]
 interpolation_mode = 1
@@ -40,6 +46,13 @@ script = ExtResource("2_npv1l")
 
 [node name="Tetrominos" type="Node3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36601, 0)
+
+[node name="Sprite3D2" type="Sprite3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.30785, -8.08934, -6.70478)
+pixel_size = 0.0313
+texture = SubResource("GradientTexture1D_0yvrl")
+region_enabled = true
+region_rect = Rect2(0, 0, 469.16, 853.335)
 
 [node name="Sprite3D" type="Sprite3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -7.15, 0)
