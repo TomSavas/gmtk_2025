@@ -67,9 +67,9 @@ const shape_colors = [
 	preload("res://assets/scale2_square.png"),
 	preload("res://assets/scale3_square.png"),
 	preload("res://assets/scale4_square.png"),
-	preload("res://assets/scale4_square.png"),
-	preload("res://assets/scale4_square.png"),
-	preload("res://assets/scale4_square.png"),
+	preload("res://assets/scale5_square.png"),
+	preload("res://assets/scale6_square.png"),
+	preload("res://assets/scale7_square.png"),
 ]
 
 static var idx = 0;
