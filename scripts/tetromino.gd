@@ -14,8 +14,10 @@ func _init(squares: Array[Square]) -> void:
 func _ready() -> void:
 	Board.instance().should_step.connect(step)
 
+func _step_count():
+	return pow(2, depth)
+
 func forcedStep(step_count=1, dir=Vector2(0.0, 1.0), undo=true):
-	step_count *= pow(2, depth)
 	var depth_scale = pow(0.5, depth)
 	for i in max(1, step_count):
 		self.position += Vector3(dir[0], -dir[1], 0) * depth_scale
@@ -64,16 +66,16 @@ func _rotate():
 	if _rotateUndo():
 		return
 		
-	var moveSuceeded = forcedStep(1, Vector2(-1.0, 0.0), true)
+	var moveSuceeded = forcedStep(_step_count(), Vector2(-1.0, 0.0), true)
 	if moveSuceeded and _rotateUndo():
 		return
 			
-	moveSuceeded = forcedStep(1, Vector2(1.0, 0.0), true)
+	moveSuceeded = forcedStep(_step_count(), Vector2(1.0, 0.0), true)
 	if moveSuceeded and _rotateUndo():
 		return
 	
 func step(depth: int = 0):
-	if not forcedStep(1, Vector2(0.0, 1.0), true):
+	if not forcedStep(_step_count(), Vector2(0.0, 1.0), true):
 	# TODO(savas): add some grace period for rotations, etc.
 		Board.instance().should_step.disconnect(step)
 		alive = false
@@ -101,12 +103,12 @@ func _process(delta: float) -> void:
 	for key in action_cooldowns:
 		action_cooldowns[key] -= delta
 		
-	_action_with_cooldown('left', func(): forcedStep(1, Vector2(-1.0, 0.0), true))
-	_action_with_cooldown('right', func(): forcedStep(1, Vector2(1.0, 0.0), true))
+	_action_with_cooldown('left', func(): forcedStep(_step_count(), Vector2(-1.0, 0.0), true))
+	_action_with_cooldown('right', func(): forcedStep(_step_count(), Vector2(1.0, 0.0), true))
 	_action_with_cooldown('down', func(): Board.instance().forced_step = true)
 
 	if Input.is_action_just_pressed('rotate'):
 		_rotate()
 		
 	if Input.is_action_just_pressed('drop'):
-		forcedStep(20, Vector2(0.0, 1.0), true)
+		forcedStep(_step_count() * 20, Vector2(0.0, 1.0), true)

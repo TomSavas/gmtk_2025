@@ -59,10 +59,10 @@ func _clear_dead_squares(min_line, max_line):
 	
 func _move_all_dead_above(min_line, cleared_line_count):
 	for t in tetrominos:
-		if t.topLeftSquare[1] > min_line:
+		if t.topLeftSquare[1] >= min_line:
 			continue
 			
-		t.forcedStep(cleared_line_count, Vector2(0.0, 1.0))
+		t.forcedStep(cleared_line_count, Vector2(0.0, 1.0), false)
 
 func _process(delta: float) -> void:
 	if time_elapsed > step_every_num_sec or forced_step:
