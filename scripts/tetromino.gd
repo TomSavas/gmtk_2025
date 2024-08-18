@@ -38,9 +38,6 @@ func _unsafe_rotate(clockwise=true):
 		s.offsetInTetromino -= Vector2(0.5, 0.5)
 		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0]), round(s.offsetInTetromino[1]))
 		s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
-		
-		#print("offset: ", s.offsetInTetromino)
-		#print("position: ", s.position)
 	
 func _rotateUndo() -> bool:
 	_unsafe_rotate(true)
@@ -77,14 +74,27 @@ func swap_remove_square(index: int):
 	squares[index] = temp
 	squares.pop_back().queue_free()
 
+
+@export var default_cooldown = 0.05
+@export var action_cooldowns = {}
+func _action_with_cooldown(action, fn):
+	if action not in action_cooldowns:
+		action_cooldowns[action] = 0
+		
+	if Input.is_action_pressed(action):
+		if action_cooldowns[action] <= 0:
+			action_cooldowns[action] = default_cooldown
+			fn.call()
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed('left'):
-		forcedStep(1, Vector2(-1.0, 0.0), true)
+	for key in action_cooldowns:
+		action_cooldowns[key] -= delta
 		
-	if Input.is_action_just_pressed('right'):
-		forcedStep(1, Vector2(1.0, 0.0), true)
-		
+	_action_with_cooldown('left', func(): forcedStep(1, Vector2(-1.0, 0.0), true))
+	_action_with_cooldown('right', func(): forcedStep(1, Vector2(1.0, 0.0), true))
+	_action_with_cooldown('down', func(): Board.instance().forced_step = true)
+
 	if Input.is_action_just_pressed('rotate'):
 		_rotate()
 		

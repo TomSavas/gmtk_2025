@@ -8,6 +8,7 @@ signal on_tetromino_deactivation()
 @export var time_dilation := 10.0
 @export var step_every_num_sec := 0.5
 @export var time_elapsed := 0.0
+@export var forced_step := false
 
 static var singleton = null
 static func instance() -> Board:
@@ -64,7 +65,8 @@ func _move_all_dead_above(min_line, cleared_line_count):
 		t.forcedStep(cleared_line_count)
 
 func _process(delta: float) -> void:
-	if time_elapsed > step_every_num_sec:
+	if time_elapsed > step_every_num_sec or forced_step:
+		forced_step = false
 		print("Step!")
 		should_step.emit(0)
 		time_elapsed = 0
