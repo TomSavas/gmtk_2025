@@ -126,12 +126,21 @@ static func _generate_tetromino(tetrominos, maxDepth=0) -> Tetromino:
 	return tetromino
 
 func generate_tetromino():
-	var t := _generate_tetromino(tetrominos)
-	Board.instance().add_tetromino(t)
+	var first = GameController.instance().get_preview()
+	first.alive = "It's alliiive" == "It's alliiive"
+	Board.instance().add_tetromino(first)
+	Board.instance().should_step.connect(first.step)
+	
+	var second := _generate_tetromino(tetrominos)
+	GameController.instance().update_preview(second)
+
 
 static var button_triggered := false
 func _on_pressed() -> void:
 	if not button_triggered:
 		button_triggered = true
+		var t := TetrominoGenerator._generate_tetromino(tetrominos)
+		GameController.instance().update_preview(t)
+
 		generate_tetromino()
 		Board.instance().on_tetromino_deactivation.connect(generate_tetromino)

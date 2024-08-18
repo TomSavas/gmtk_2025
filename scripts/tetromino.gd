@@ -3,7 +3,7 @@ extends Node3D
 
 @export var topLeftSquare: Vector2 = Vector2(0, 0)
 @export var squares: Array[Square] = []
-@export var alive: bool = true
+@export var alive: bool = false
 @export var rotation_center: Vector2 = Vector2(0, 0)
 
 func _init(squares: Array[Square]) -> void:
@@ -11,7 +11,7 @@ func _init(squares: Array[Square]) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Board.instance().should_step.connect(step)
+	pass
 
 func forcedStep(step_count=1, dir=Vector2(0.0, 1.0), undo=true):
 	for i in max(1, step_count):
@@ -88,6 +88,9 @@ func _action_with_cooldown(action, fn):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if not alive:
+		return
+	
 	for key in action_cooldowns:
 		action_cooldowns[key] -= delta
 		
