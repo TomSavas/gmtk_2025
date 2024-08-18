@@ -6,7 +6,7 @@ signal on_tetromino_deactivation()
 
 
 @export var time_dilation := 10.0
-@export var step_every_num_sec := 2
+@export var step_every_num_sec := 0.5
 @export var time_elapsed := 0.0
 
 static var singleton = null
@@ -83,15 +83,14 @@ func _process(delta: float) -> void:
 		
 		_recalc_board()
 	
-	print("Board:")
-	for y in height:
-		var line = ""
-		for x in width:
-			var index = y * width + x
-			var marker = "X" if board[index] else "0"
-			line += marker
-		print(line)
-	print()
+		var board_repr = "Board:\n"
+		for y in height:
+			for x in width:
+				var index = y * width + x
+				var marker = "#" if board[index] else "."
+				board_repr += marker
+			board_repr += "\n"
+		print(board_repr + "\n\n")
 	
 	time_elapsed += delta
 	
@@ -118,7 +117,6 @@ func above_ground(t: Tetromino) -> bool:
 			
 	return true
 	
-	
 func collides(t: Tetromino) -> bool:
 	_recalc_board([t, currently_live_tetromino])
 	if not above_ground(t) or not in_bounds(t):
@@ -126,15 +124,14 @@ func collides(t: Tetromino) -> bool:
 		
 	for s in t.squares:
 		var index = _index(t, s)
-		if board[index]:
+		if index < 0 or index > width * height or board[index]:
 			return true
 		
 	return false
 	
 func _index(t: Tetromino, s: Square) -> int:
-	var x = t.topLeftSquare[0] + s.offsetInTetromino[0]
-	var y = t.topLeftSquare[1] + s.offsetInTetromino[1]
-	return y * width + x
+	var offset = t.topLeftSquare + s.offsetInTetromino
+	return offset[1] * width + offset[0]
 	
 func add_tetromino(t: Tetromino): 
 	tetrominos.append(t)

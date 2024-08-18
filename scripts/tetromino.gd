@@ -14,42 +14,55 @@ func _ready() -> void:
 	Board.instance().should_step.connect(step)
 
 func forcedStep(step_count=1, dir=Vector2(0.0, 1.0), undo=true):
-	self.position += Vector3(dir[0], -dir[1], 0) * step_count
-	topLeftSquare += dir * step_count
-	
-	var board := Board.instance()
-	if undo and board.collides(self):
-		self.position -= Vector3(dir[0], -dir[1], 0) * step_count
-		topLeftSquare -= dir * step_count
-		return false
+	for i in max(1, step_count):
+		self.position += Vector3(dir[0], -dir[1], 0)
+		topLeftSquare += dir
 		
+		var board := Board.instance()
+		if undo and board.collides(self):
+			self.position -= Vector3(dir[0], -dir[1], 0)
+			topLeftSquare -= dir
+			return false
+	
 	return true
 	
-func _rotate(undo=true):
+func _unsafe_rotate(clockwise=true):
 	for s in squares:
 		# move the origin to center of mass
 		s.offsetInTetromino += Vector2(0.5, 0.5)
 		s.offsetInTetromino -= rotation_center
 		# rotate around the origin by pi/2
-		s.offsetInTetromino = s.offsetInTetromino.rotated(PI / 2)
+		s.offsetInTetromino = s.offsetInTetromino.rotated(PI / 2 * (1.0 if clockwise else -1.0))
 		# undo origin translation
 		s.offsetInTetromino += rotation_center
 		s.offsetInTetromino -= Vector2(0.5, 0.5)
-		s.position = Vector3(s.offsetInTetromino[0], s.offsetInTetromino[1], s.position.z)
+		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0]), round(s.offsetInTetromino[1]))
+		s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
+		
+		#print("offset: ", s.offsetInTetromino)
+		#print("position: ", s.position)
+	
+func _rotateUndo() -> bool:
+	_unsafe_rotate(true)
 
 	var board := Board.instance()
-	if undo and board.collides(self):
-		for s in squares:
-			# move the origin to center of mass
-			s.offsetInTetromino += Vector2(0.5, 0.5)
-			s.offsetInTetromino -= rotation_center
-			# rotate around the origin by pi/2
-			s.offsetInTetromino = s.offsetInTetromino.rotated(-PI / 2)
-			# undo origin translation
-			s.offsetInTetromino += rotation_center
-			s.offsetInTetromino -= Vector2(0.5, 0.5)
-			s.position = Vector3(s.offsetInTetromino[0], s.offsetInTetromino[1], s.position.z)
+	if board.collides(self):
+		_unsafe_rotate(false)
+		return false
+		
+	return true
 
+func _rotate():
+	if _rotateUndo():
+		return
+		
+	var moveSuceeded = forcedStep(1, Vector2(-1.0, 0.0), true)
+	if moveSuceeded and _rotateUndo():
+		return
+			
+	moveSuceeded = forcedStep(1, Vector2(1.0, 0.0), true)
+	if moveSuceeded and _rotateUndo():
+		return
 	
 func step(depth: int = 0):
 	if not forcedStep(1, Vector2(0.0, 1.0), true):
@@ -73,4 +86,7 @@ func _process(delta: float) -> void:
 		forcedStep(1, Vector2(1.0, 0.0), true)
 		
 	if Input.is_action_just_pressed('rotate'):
-		_rotate(true)
+		_rotate()
+		
+	if Input.is_action_just_pressed('drop'):
+		forcedStep(20, Vector2(0.0, 1.0), true)
