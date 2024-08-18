@@ -75,7 +75,7 @@ func swap_remove_square(index: int):
 	squares.pop_back().queue_free()
 
 
-@export var default_cooldown = 0.05
+@export var default_cooldown = 0.075
 @export var action_cooldowns = {}
 func _action_with_cooldown(action, fn):
 	if action not in action_cooldowns:
