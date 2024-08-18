@@ -30,6 +30,10 @@ func forcedStep(step_count=1, dir=Vector2(0.0, 1.0), undo=true):
 	return true
 	
 func _unsafe_rotate(clockwise=true):
+	var offset = 0.0
+	for i in range(2, depth + 2):
+		offset += pow(0.5, i)
+	
 	var depth_scale = pow(0.5, depth)
 	for s in squares:
 		# move the origin to center of mass
@@ -41,7 +45,10 @@ func _unsafe_rotate(clockwise=true):
 		s.offsetInTetromino += rotation_center
 		s.offsetInTetromino -= Vector2(0.5, 0.5) * depth_scale
 		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0] / depth_scale) * depth_scale, round(s.offsetInTetromino[1] / depth_scale) * depth_scale)
-		s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
+		#s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
+
+		s.position = Vector3(s.offsetInTetromino[0] - offset, -s.offsetInTetromino[1] + offset, 0)
+
 	
 func _rotateUndo() -> bool:
 	_unsafe_rotate(true)

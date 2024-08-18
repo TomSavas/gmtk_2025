@@ -73,12 +73,12 @@ const shape_colors = [
 ]
 
 static var idx = 0;
-static func _generate_tetromino(tetrominos, depth=1) -> Tetromino:
+static func _generate_tetromino(tetrominos, depth=2) -> Tetromino:
 	#var shape_index = idx
 	#idx = (idx + 1) % len(baseShapes)
 	var shape_index = randi_range(0, len(baseShapes)-1)
 	#var shape_index = randi_range(2, 3)
-	#var shape_index = 4
+	#shape_index = 4
 	var baseShape = baseShapes[shape_index]
 	var real_width = pow(2, depth) * width
 	var real_height = pow(2, depth) * height	
@@ -93,7 +93,11 @@ static func _generate_tetromino(tetrominos, depth=1) -> Tetromino:
 			var index := y * width + x
 			if baseShape[index] == 0:
 				continue
-	
+
+	var offset = 0.0
+	for i in range(2, depth + 2):
+		offset += pow(0.5, i)
+
 	var step = pow(0.5, depth)
 	for x in real_width:
 		for y in real_height:
@@ -108,7 +112,7 @@ static func _generate_tetromino(tetrominos, depth=1) -> Tetromino:
 			var scene = squareScene.instantiate()
 			var square = scene.get_node(".") as Square
 			square.get_node("Sprite3D").texture = shape_colors[shape_index]
-			scene.position = Vector3(scaled_x, -scaled_y, 0)
+			scene.position = Vector3(scaled_x - offset, -scaled_y + offset, 0)
 			
 			square.offsetInTetromino = Vector2(scaled_x, scaled_y)
 			square.scale *= pow(0.5, depth)

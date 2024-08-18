@@ -14,8 +14,8 @@ static var singleton = null
 static func instance() -> Board:
 	return singleton
 	
-@export var width = 10 * 2
-@export var height = 18 * 2
+@export var width = 10 * 4
+@export var height = 18 * 4
 
 var tetrominos: Array[Tetromino] = []
 var board: Array[bool] = []
@@ -47,11 +47,11 @@ func _check_lines():
 
 func _clear_dead_squares(min_line, max_line):
 	for t in tetrominos:
-
+		var depth_scale = pow(2, t.depth)
 		var i = 0
 		while i < len(t.squares):
 			var s = t.squares[i]
-			var y = t.topLeftSquare[1] + s.offsetInTetromino[1]
+			var y = t.topLeftSquare[1] + s.offsetInTetromino[1] * depth_scale
 			if min_line <= y and y <= max_line:
 				t.swap_remove_square(i)
 			else:
@@ -62,7 +62,7 @@ func _move_all_dead_above(min_line, cleared_line_count):
 		if t.topLeftSquare[1] > min_line:
 			continue
 			
-		t.forcedStep(cleared_line_count, Vector2(0.0, 1.0), false)
+		t.forcedStep(cleared_line_count, Vector2(0.0, 1.0))
 
 func _process(delta: float) -> void:
 	if time_elapsed > step_every_num_sec or forced_step:
@@ -135,6 +135,7 @@ func collides(t: Tetromino) -> bool:
 	
 func _index(t: Tetromino, s: Square) -> int:
 	var depth_scale = pow(2.0, t.depth)
+	#var offset = t.topLeftSquare + s.offsetInTetromino * depth_scale
 	var offset = t.topLeftSquare + s.offsetInTetromino * depth_scale
 	return offset[1] * width + offset[0]
 	
