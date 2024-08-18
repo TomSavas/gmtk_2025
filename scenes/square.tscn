@@ -7,5 +7,6 @@
 script = ExtResource("1_0lpv5")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+sorting_offset = 10.0
 pixel_size = 0.0313
 texture = ExtResource("2_373pd")

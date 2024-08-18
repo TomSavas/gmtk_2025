@@ -14,8 +14,8 @@ static var singleton = null
 static func instance() -> Board:
 	return singleton
 	
-@export var width = 10 * 4
-@export var height = 18 * 4
+@export var width = 10 * 2
+@export var height = 18 * 2
 
 var tetrominos: Array[Tetromino] = []
 var board: Array[bool] = []
@@ -83,16 +83,16 @@ func _process(delta: float) -> void:
 			_move_all_dead_above(lines.min(), lines.max() - lines.min() + 1)
 			print("clearing!")
 		
-		_recalc_board()
+		#_recalc_board()
 	
-		var board_repr = "Board:\n"
-		for y in height:
-			for x in width:
-				var index = y * width + x
-				var marker = "#" if board[index] else "."
-				board_repr += marker
-			board_repr += "\n"
-		print(board_repr + "\n\n")
+		#var board_repr = "Board:\n"
+		#for y in height:
+			#for x in width:
+				#var index = y * width + x
+				#var marker = "#" if board[index] else "."
+				#board_repr += marker
+			#board_repr += "\n"
+		#print(board_repr + "\n\n")
 	
 	time_elapsed += delta
 	
@@ -102,7 +102,11 @@ func _recalc_board(excludes = null):
 		if excludes != null and tetromino in excludes:
 			continue
 		for square in tetromino.squares:
-			board[_index(tetromino, square)] = true
+			var index = _index(tetromino, square)
+			if 0 <= index and index < width*height:
+				board[index] = true
+			else:
+				print("Incorrect index!")
 	
 func in_bounds(t: Tetromino) -> bool:
 	var depth_scale = pow(2, t.depth)
@@ -135,7 +139,6 @@ func collides(t: Tetromino) -> bool:
 	
 func _index(t: Tetromino, s: Square) -> int:
 	var depth_scale = pow(2.0, t.depth)
-	#var offset = t.topLeftSquare + s.offsetInTetromino * depth_scale
 	var offset = t.topLeftSquare + s.offsetInTetromino * depth_scale
 	return offset[1] * width + offset[0]
 	

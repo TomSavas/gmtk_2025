@@ -1,17 +1,20 @@
-[gd_scene load_steps=14 format=3 uid="uid://c4rpayn57hir5"]
+[gd_scene load_steps=16 format=3 uid="uid://c4rpayn57hir5"]
 
 [ext_resource type="Script" path="res://scenes/game_controller.gd" id="1_t0j2e"]
 [ext_resource type="Texture2D" uid="uid://dhw76mpin1twk" path="res://assets/Border_thin.png" id="2_h70j5"]
 [ext_resource type="Script" path="res://scripts/board.gd" id="2_npv1l"]
 [ext_resource type="Script" path="res://scripts/tetromino_generator.gd" id="2_x15hp"]
+[ext_resource type="Texture2D" uid="uid://n72wak27mo3c" path="res://assets/Border_small.png" id="3_7o2qv"]
 [ext_resource type="Theme" uid="uid://te37isgt50hw" path="res://assets/new_theme.tres" id="3_y4q4p"]
 [ext_resource type="Texture2D" uid="uid://dt40hvj6mhwuo" path="res://assets/scale2_square.png" id="4_ipu2p"]
+[ext_resource type="Texture2D" uid="uid://bgqjefmxb6844" path="res://assets/Border.png" id="4_j7pqa"]
 [ext_resource type="Texture2D" uid="uid://chhr1dmsrk8n8" path="res://assets/scale3_square.png" id="6_6qbph"]
 [ext_resource type="Script" path="res://scenes/do_random_stuff.gd" id="7_kmgr1"]
 [ext_resource type="AudioStream" uid="uid://qv2wmyog7l51" path="res://assets/tetris.mp3" id="9_gm05w"]
 
 [sub_resource type="Gradient" id="Gradient_6book"]
-colors = PackedColorArray(0.719076, 0.719076, 0.719076, 1, 0.717647, 0.717647, 0.717647, 1)
+offsets = PackedFloat32Array(0.986111)
+colors = PackedColorArray(0.219608, 0.0862745, 0.192157, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_0yvrl"]
 gradient = SubResource("Gradient_6book")
@@ -41,36 +44,85 @@ render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Node3D/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -5.5, 15)
+near = 0.01
+far = 50.0
 
 [node name="BoardBackground" type="Sprite3D" parent="Node3D"]
-transform = Transform3D(-10, 0, -8.74228e-08, 0, 18, 0, 8.74228e-07, 0, -1, 5, 0, 0)
+transform = Transform3D(-10, 0, -8.74228e-08, 0, 18, 0, 8.74228e-07, 0, -1, 5, 0, -9.18686)
 region_rect = Rect2(0, 0, 200, 0)
 script = ExtResource("2_npv1l")
 
-[node name="Tetrominos" type="Node3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36601, 0)
-
-[node name="Sprite3D2" type="Sprite3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.30785, -8.08934, -6.70478)
+[node name="Background" type="Sprite3D" parent="Node3D/BoardBackground"]
+transform = Transform3D(-0.1, 0, 8.74228e-09, 0, 0.0555556, 0, -8.74228e-08, 0, -1, 0.05, -0.4, -9.07769)
 pixel_size = 0.0313
 texture = SubResource("GradientTexture1D_0yvrl")
 region_enabled = true
-region_rect = Rect2(0, 0, 469.16, 853.335)
+region_rect = Rect2(0, 0, 340, 600)
 
-[node name="Sprite3D" type="Sprite3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -7.15, 0)
+[node name="Sprite3D" type="Sprite3D" parent="Node3D/BoardBackground"]
+transform = Transform3D(-1, 0, 8.66252e-07, 0, 1, 0, -8.66252e-07, 0, -1, 0.0500001, -0.397222, -9.17749)
+visible = false
 pixel_size = 0.0313
 texture = ExtResource("2_h70j5")
 region_rect = Rect2(0, 0, 176, 304)
 
+[node name="Border" type="Sprite3D" parent="Node3D/BoardBackground"]
+transform = Transform3D(-0.1, 0, 8.66252e-07, 0, 0.0555556, 0, -8.66252e-08, 0, -1, 0.0492227, -0.394506, -9.177)
+pixel_size = 0.0313
+texture = ExtResource("4_j7pqa")
+region_rect = Rect2(0, 0, 176, 304)
+
+[node name="Next" type="Sprite3D" parent="Node3D/BoardBackground"]
+transform = Transform3D(-0.1, 0, 8.66252e-07, 0, 0.0555556, 0, -8.66252e-08, 0, -1, 1.04186, -0.126, -9.177)
+pixel_size = 0.0313
+texture = ExtResource("3_7o2qv")
+region_rect = Rect2(0, 0, 176, 304)
+
+[node name="Marker" type="Sprite3D" parent="Node3D/BoardBackground/Next"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.827781, 0.682502, -0.196889)
+visible = false
+pixel_size = 0.0313
+texture = ExtResource("3_7o2qv")
+region_rect = Rect2(0, 0, 176, 304)
+
+[node name="Background" type="Sprite3D" parent="Node3D/BoardBackground/Next"]
+transform = Transform3D(1, 0, -9.09495e-13, 0, 1, 0, 0, 0, 1, -0.185928, 0.10027, -0.196477)
+pixel_size = 0.0313
+texture = SubResource("GradientTexture1D_0yvrl")
+region_enabled = true
+region_rect = Rect2(0, 0, 170, 150)
+
+[node name="PreviewRoot" type="Node3D" parent="Node3D/BoardBackground/Next"]
+transform = Transform3D(1, 0, 8.5751e-06, 0, 0.999999, 0, 7.97606e-10, 0, 1, 0, 0, 0)
+
+[node name="Hold" type="Sprite3D" parent="Node3D/BoardBackground"]
+transform = Transform3D(-0.1, 0, 8.66252e-07, 0, 0.0555556, 0, -8.66252e-08, 0, -1, 1.04186, -0.478123, -9.177)
+pixel_size = 0.0313
+texture = ExtResource("3_7o2qv")
+region_rect = Rect2(0, 0, 176, 304)
+
+[node name="Marker" type="Sprite3D" parent="Node3D/BoardBackground/Hold"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.827781, 0.682502, -0.196889)
+visible = false
+pixel_size = 0.0313
+texture = ExtResource("3_7o2qv")
+region_rect = Rect2(0, 0, 176, 304)
+
+[node name="Background" type="Sprite3D" parent="Node3D/BoardBackground/Hold"]
+transform = Transform3D(1, 0, -9.09495e-13, 0, 1, 0, 0, 0, 1, -0.185928, 0.10027, -0.196477)
+pixel_size = 0.0313
+texture = SubResource("GradientTexture1D_0yvrl")
+region_enabled = true
+region_rect = Rect2(0, 0, 170, 150)
+
 [node name="Background" type="Sprite3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.3614)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.9914)
 texture = SubResource("GradientTexture1D_q4bxy")
 region_enabled = true
 region_rect = Rect2(0, 0, 10000, 10000)
 
-[node name="PreviewRoot" type="Node3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.7146, 0, 3.64316)
+[node name="Tetrominos" type="Node3D" parent="Node3D"]
+transform = Transform3D(1.008, 0, 0, 0, 1.008, 0, 0, 0, 1.008, -0.05, 1.475, 0)
 
 [node name="StartGameButton" type="Control" parent="."]
 custom_minimum_size = Vector2(300, 200)
@@ -144,6 +196,7 @@ theme_override_font_sizes/font_size = 31
 text = "START GAME"
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 offset_left = 183.0
 offset_top = 866.0
 offset_right = 233.0
@@ -152,6 +205,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect2" type="TextureRect" parent="."]
+visible = false
 offset_left = 315.0
 offset_top = 676.0
 offset_right = 365.0
@@ -160,6 +214,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect3" type="TextureRect" parent="."]
+visible = false
 offset_left = 1392.0
 offset_top = 898.0
 offset_right = 1442.0
@@ -168,6 +223,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect4" type="TextureRect" parent="."]
+visible = false
 offset_left = 1543.0
 offset_top = 631.0
 offset_right = 1593.0
@@ -176,6 +232,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect5" type="TextureRect" parent="."]
+visible = false
 offset_left = 1595.0
 offset_top = 336.0
 offset_right = 1645.0
@@ -184,6 +241,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect6" type="TextureRect" parent="."]
+visible = false
 offset_left = 1799.0
 offset_top = 253.0
 offset_right = 1849.0
@@ -192,6 +250,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect7" type="TextureRect" parent="."]
+visible = false
 offset_left = 1788.0
 offset_top = 559.0
 offset_right = 1838.0
@@ -200,6 +259,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect8" type="TextureRect" parent="."]
+visible = false
 offset_left = 1583.0
 offset_top = 76.0
 offset_right = 1633.0
@@ -208,6 +268,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect9" type="TextureRect" parent="."]
+visible = false
 offset_left = 491.0
 offset_top = 927.0
 offset_right = 541.0
@@ -216,6 +277,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect10" type="TextureRect" parent="."]
+visible = false
 offset_left = 170.0
 offset_top = 426.0
 offset_right = 220.0
@@ -224,6 +286,7 @@ texture = ExtResource("6_6qbph")
 script = ExtResource("7_kmgr1")
 
 [node name="TextureRect11" type="TextureRect" parent="."]
+visible = false
 offset_left = 1760.0
 offset_top = 931.0
 offset_right = 1810.0

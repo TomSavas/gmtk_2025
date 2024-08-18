@@ -47,8 +47,7 @@ func _unsafe_rotate(clockwise=true):
 		s.offsetInTetromino += rotation_center
 		s.offsetInTetromino -= Vector2(0.5, 0.5) * depth_scale
 		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0] / depth_scale) * depth_scale, round(s.offsetInTetromino[1] / depth_scale) * depth_scale)
-		#s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
-
+		s.rotation.z += -PI / 2.0 * (1.0 if clockwise else -1.0)
 		s.position = Vector3(s.offsetInTetromino[0] - offset, -s.offsetInTetromino[1] + offset, 0)
 
 	
