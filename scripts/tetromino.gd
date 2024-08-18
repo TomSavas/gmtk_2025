@@ -5,6 +5,7 @@ extends Node3D
 @export var squares: Array[Square] = []
 @export var alive: bool = true
 @export var rotation_center: Vector2 = Vector2(0, 0)
+@export var depth = 0
 
 func _init(squares: Array[Square]) -> void:
 	self.squares = squares
@@ -14,29 +15,32 @@ func _ready() -> void:
 	Board.instance().should_step.connect(step)
 
 func forcedStep(step_count=1, dir=Vector2(0.0, 1.0), undo=true):
+	step_count *= pow(2, depth)
+	var depth_scale = pow(0.5, depth)
 	for i in max(1, step_count):
-		self.position += Vector3(dir[0], -dir[1], 0)
+		self.position += Vector3(dir[0], -dir[1], 0) * depth_scale
 		topLeftSquare += dir
 		
 		var board := Board.instance()
 		if undo and board.collides(self):
-			self.position -= Vector3(dir[0], -dir[1], 0)
+			self.position -= Vector3(dir[0], -dir[1], 0) * depth_scale
 			topLeftSquare -= dir
 			return false
 	
 	return true
 	
 func _unsafe_rotate(clockwise=true):
+	var depth_scale = pow(0.5, depth)
 	for s in squares:
 		# move the origin to center of mass
-		s.offsetInTetromino += Vector2(0.5, 0.5)
+		s.offsetInTetromino += Vector2(0.5, 0.5) * depth_scale
 		s.offsetInTetromino -= rotation_center
 		# rotate around the origin by pi/2
 		s.offsetInTetromino = s.offsetInTetromino.rotated(PI / 2 * (1.0 if clockwise else -1.0))
 		# undo origin translation
 		s.offsetInTetromino += rotation_center
-		s.offsetInTetromino -= Vector2(0.5, 0.5)
-		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0]), round(s.offsetInTetromino[1]))
+		s.offsetInTetromino -= Vector2(0.5, 0.5) * depth_scale
+		s.offsetInTetromino = Vector2(round(s.offsetInTetromino[0] / depth_scale) * depth_scale, round(s.offsetInTetromino[1] / depth_scale) * depth_scale)
 		s.position = Vector3(s.offsetInTetromino[0], -s.offsetInTetromino[1], s.position.z)
 	
 func _rotateUndo() -> bool:
@@ -73,7 +77,6 @@ func swap_remove_square(index: int):
 	squares[-1] = squares[index]
 	squares[index] = temp
 	squares.pop_back().queue_free()
-
 
 @export var default_cooldown = 0.075
 @export var action_cooldowns = {}
